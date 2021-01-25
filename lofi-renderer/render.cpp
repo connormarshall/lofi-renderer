@@ -52,7 +52,7 @@ void draw_rect_by_pixels(int x1, int y1, int x2, int y2, u32 colour) {
 	}
 }
 
-void plot_pixel(int x, int y, u32 colour) {
+inline void plot_pixel(int x, int y, u32 colour) {
 	x = clamp(0, x, render_state.width);
 	y = clamp(0, y, render_state.height);
 
@@ -83,7 +83,7 @@ void draw_line(int x1, int y1, int x2, int y2, u32 colour) {
 			}
 		}
 		if (y1 > y2) {
-			for (int y = y2; y < x1; y++) {
+			for (int y = y1; y > y2; y--) {
 				plot_pixel(x, y, colour);
 			}
 		}
@@ -100,7 +100,7 @@ void draw_line(int x1, int y1, int x2, int y2, u32 colour) {
 			}
 		}
 		if(x1 > x2) {
-			for (int x = x2; x > x1; x++) {
+			for (int x = x1; x > x2; x--) {
 				plot_pixel(x, y, colour);
 			}
 		}
@@ -113,8 +113,7 @@ void draw_line(int x1, int y1, int x2, int y2, u32 colour) {
 	while (drawing) {
 		int y = y1 + dy * (x - x1) / dx;
 
-		pixel = (u32*)render_state.memory + x + ( (y - 1) * render_state.width);
-		*pixel = colour;
+		plot_pixel(x, y, colour);
 
 		if (x < x2) {
 			x++;
@@ -135,5 +134,20 @@ void draw_triangle(int x1, int y1, int x2, int y2, int x3, int y3, u32 colour) {
 	draw_line(x1, y1, x2, y2, colour);
 	draw_line(x2, y2, x3, y3, colour);
 	draw_line(x3, y3, x1, y1, colour);
+
+}
+
+void fill_triangle(int x1, int y1, int x2, int y2, int x3, int y3, u32 colour) {
+
+	//	Scan fill algorithm
+	//	Step 1: get yMin and yMax
+
+	//	Step 2: get intersection points of a ScanLine with each edge
+
+	//	Step 3: sort intersection points in order of increasing x
+
+	//	Step 4: draw line on alternating pairs of intersection points
+
+	//	Step 5: increase ScanLine y-pos by 1, loop back to Step 2 until yMax is reached
 
 }

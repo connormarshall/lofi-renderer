@@ -30,3 +30,7 @@ void matrixmult(vec3d &i, vec3d &o, matrix4x4 &m) {
 	}
 
 }
+
+float dot_product(vec3d &a, vec3d &b) {
+	return a.x * b.x + a.y * b.y + a.z * b.z;
+}
