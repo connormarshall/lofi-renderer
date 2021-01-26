@@ -213,6 +213,84 @@ void fill_top_flat_tri(int x1, int y1, int x2, int y2, int x3, int y3, u32 colou
 
 }
 
+void fill_triangle(int x1, int y1, int x2, int y2, int x3, int y3, u32 colour) {
+
+	vertice v1, v2, v3;
+	v1.x = x1, v1.y = y1;
+	v2.x = x2, v2.y = y2;
+	v3.x = x3, v3.y = y3;
+
+	vertice sorted[3];
+
+	//	v1 is the top vertice
+	if(y1 <= y2 && y1 <= y3) {
+		sorted[0] = v1;
+
+		if (y2 <= y3) {
+			sorted[1] = v2;
+			sorted[2] = v3;
+		}
+		else {
+			sorted[1] = v3;
+			sorted[2] = v2;
+		}
+
+	}
+	//	v2 is the top vertice
+	if (y2 <= y1 && y2 <= y3) {
+
+		sorted[0] = v2;
+
+		if (y1 <= y3) {
+			sorted[1] = v1;
+			sorted[2] = v3;
+		}
+		else {
+			sorted[1] = v3;
+			sorted[2] = v1;
+		}
+	}
+	//	v3 is the top vertice
+	if (y3 <= y1 && y3 <= y2) {
+
+		sorted[0] = v3;
+
+		if (y2 <= y1) {
+			sorted[1] = v2;
+			sorted[2] = v1;
+		}
+		else {
+			sorted[1] = v1;
+			sorted[2] = v2;
+		}
+	}
+
+
+	draw_triangle(sorted[0].x, sorted[0].y, sorted[1].x, sorted[1].y, sorted[2].x, sorted[2].y, colour);
+
+	//	If bottom flat
+	if (sorted[1].y == sorted[2].y) {
+		fill_bottom_flat_tri(sorted[0].x, sorted[0].y, sorted[1].x, sorted[1].y, sorted[2].x, sorted[2].y, colour);
+	} 
+	//	If top flat
+	else if (sorted[0].y == sorted[1].y) {
+		fill_top_flat_tri(sorted[0].x, sorted[0].y, sorted[1].x, sorted[1].y, sorted[2].x, sorted[2].y, colour);
+	}
+	//	General case
+	else {
+		vertice v4;
+		v4.x = (int)(sorted[0].x + ((float)(sorted[1].y - sorted[0].y) / (float)(sorted[2].y - sorted[0].y)) * (sorted[2].x - sorted[0].x));
+		v4.y = sorted[1].y;
+
+		fill_bottom_flat_tri(sorted[0].x, sorted[0].y, sorted[1].x, sorted[1].y, v4.x, v4.y, colour);
+		fill_top_flat_tri(sorted[1].x, sorted[1].y, v4.x, v4.y, sorted[2].x, sorted[2].y, colour);
+	}
+
+
+}
+
+
+/*
 
 void fill_triangle(int x1, int y1, int x2, int y2, int x3, int y3, u32 colour) {
 
@@ -267,3 +345,4 @@ void fill_triangle(int x1, int y1, int x2, int y2, int x3, int y3, u32 colour) {
 		}
 	}
 }
+*/
