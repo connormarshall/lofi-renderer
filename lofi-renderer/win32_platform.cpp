@@ -267,6 +267,17 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 				normal.z * (triTranslated.p[0].z - vCamera.z) 
 				< 0.0f)
 			{
+				//	Directional lighting
+				vec3d light_direction = {0.0f, 0.0f, -1.0f};
+				//	Normalized light
+				float l = sqrtf(light_direction.x * light_direction.x + 
+					light_direction.y * light_direction.y + 
+					light_direction.z * light_direction.z);
+				light_direction.x /= l; light_direction.y /= l; light_direction.z /= l;
+
+				float dp = dot_product(normal, light_direction);
+
+				triTranslated.colour = dp * 200;
 
 				// Project triangles from 3D --> 2D
 				matrixmult(triTranslated.p[0], triProjected.p[0], matProj);
@@ -284,20 +295,33 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 				triProjected.p[2].x *= 0.5f * (float)render_state.width;
 				triProjected.p[2].y *= 0.5f * (float)render_state.height;
 
+				triProjected.colour = triTranslated.colour;
+
 				// Rasterize triangle
+
 				fill_triangle(
 					triProjected.p[0].x, triProjected.p[0].y,
 					triProjected.p[1].x, triProjected.p[1].y,
 					triProjected.p[2].x, triProjected.p[2].y,
-					colours.baby_blue
+					triProjected.colour
 				);
 
+
+				/*
+				fill_triangle(
+					triProjected.p[0].x, triProjected.p[0].y,
+					triProjected.p[1].x, triProjected.p[1].y,
+					triProjected.p[2].x, triProjected.p[2].y,
+					colours.tuscany
+				);
+
+				
 				draw_triangle(
 					triProjected.p[0].x, triProjected.p[0].y,
 					triProjected.p[1].x, triProjected.p[1].y,
 					triProjected.p[2].x, triProjected.p[2].y,
 					0x000000
-				);
+				);*/
 
 			}
 		}
