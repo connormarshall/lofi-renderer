@@ -285,16 +285,19 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 				triProjected.p[2].y *= 0.5f * (float)render_state.height;
 
 				// Rasterize triangle
-				draw_triangle(
+				fill_triangle(
 					triProjected.p[0].x, triProjected.p[0].y,
 					triProjected.p[1].x, triProjected.p[1].y,
 					triProjected.p[2].x, triProjected.p[2].y,
-					colours.baby_blue
+					colours.tuscany
 				);
+
 			}
 		}
 
 		
+		// fill_top_flat_tri(0, 0, 100, 0, 200, 100, colours.tuscany);
+
 		/*
 		draw_rect_by_pixels(20, 20, 80, 80, colours.baby_blue);
 		draw_rect_by_pixels(20, 100, 80, 160, colours.tuscany);
